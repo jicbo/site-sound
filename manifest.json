@@ -4,9 +4,9 @@
 	"version": "1.0",
 
 	"description": "Allows user to set volume for each tab",
-    "homepage_url": "https://github.com/jicbo/tab-volume",
+	"homepage_url": "https://github.com/jicbo/tab-volume",
 	"icons": {
-        "512": "icons/wave-512.png"
+		"512": "icons/wave-512.png"
 	},
 
 	"permissions": ["activeTab", "storage"],
