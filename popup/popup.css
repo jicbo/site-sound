@@ -1,0 +1,108 @@
+body {
+    background: #23272f;
+    color: #fff;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-width: 260px;
+}
+
+.container {
+    padding: 18px 16px 14px 16px;
+    border-radius: 8px;
+    background: #2c313a;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+h2 {
+    margin: 0 0 12px 0;
+    font-size: 1.1em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.slider-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+#volume-slider {
+    flex: 1;
+    accent-color: #4fc3f7;
+    height: 4px;
+    width: 100%;
+}
+
+/* Chrome, Safari, Edge */
+#volume-slider::-webkit-slider-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #4fc3f7;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Firefox */
+#volume-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #4fc3f7;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* IE/Edge */
+#volume-slider::-ms-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #4fc3f7;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#volume-value {
+    min-width: 48px;
+    text-align: right;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.preset-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0 4px 0;
+}
+
+.preset-btn {
+    background: #353b48;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 12px;
+    font-size: 0.98em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.preset-btn:hover, .preset-btn:focus {
+    background: #4fc3f7;
+    color: #23272f;
+}
