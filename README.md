@@ -13,7 +13,3 @@ A Firefox extension that allows you adjust the volume for each tab individually.
 - Click the Tab Volume icon in your toolbar.
 - Use the slider or preset buttons to set the volume for the current site.
 - The extension will remember your setting for each website.
-
-## License
-
-MIT
