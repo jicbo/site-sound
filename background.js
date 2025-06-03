@@ -3,7 +3,6 @@ function _browser() {
     return typeof browser !== 'undefined' ? browser : chrome;
 }
 
-// No boosting, just 0-100% volume per site
 let siteVolumes = {};
 let lastVolume = 100;
 

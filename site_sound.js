@@ -1,6 +1,3 @@
-console.log("Site Sound content script loaded on", window.location.href);
-
-// site_sound.js - Site Sound content script
 (function () {
     function _browser() { return typeof browser !== 'undefined' ? browser : chrome; }
     function getSiteKey() { return window.location.hostname; }
