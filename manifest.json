@@ -1,26 +1,30 @@
 {
 	"manifest_version": 2,
-	"name": "Tab Volume",
+	"name": "Site Sound",
 	"version": "1.0",
 
-	"description": "Allows user to set volume for each tab",
-	"homepage_url": "https://github.com/jicbo/tab-volume",
+	"description": "Set and boost sound volume for each website. Remembers your preferred volume per site.",
+	"homepage_url": "https://github.com/jicbo/site-sound",
 	"icons": {
 		"512": "icons/wave-512.png"
 	},
 
-	"permissions": ["activeTab", "storage"],
+	"permissions": ["storage", "tabs", "<all_urls>"],
 
 	"browser_action": {
 		"default_icon": "icons/wave-512.png",
-		"default_title": "Tab Volume",
+		"default_title": "Site Sound",
 		"default_popup": "popup/popup.html"
 	},
 
 	"content_scripts": [
 		{
 			"matches": ["<all_urls>"],
-			"js": ["tab_volume.js"]
+			"js": ["site_sound.js"]
 		}
-	]
+	],
+
+	"background": {
+		"scripts": ["background.js"]
+	}
 }
