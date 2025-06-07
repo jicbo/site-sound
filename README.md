@@ -1,6 +1,6 @@
 # Site Sound
 
-A Firefox extension to set and remember audio volume for each website.
+A Firefox extension with per-site volume control, saved automatically. 
 
 ## Features
 
