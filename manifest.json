@@ -1,9 +1,9 @@
 {
 	"manifest_version": 2,
 	"name": "Site Sound",
-	"version": "1.0",
+	"version": "1.1",
 
-	"description": "Set and boost sound volume for each website. Remembers your preferred volume per site.",
+	"description": "Set volume for each website. Remembers your preferred volume per site.",
 	"homepage_url": "https://github.com/jicbo/site-sound",
 	"icons": {
 		"512": "icons/wave-512.png"
