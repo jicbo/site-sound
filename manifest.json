@@ -37,8 +37,6 @@
 			"id": "{f329decc-333b-4f42-b59c-65e7608928c4}",
 			"strict_min_version": "79.0",
 			"data_collection_permissions": {
-				"user_content": false,
-				"telemetry": false,
 				"required": ["none"]
 			}
 		}
