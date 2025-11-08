@@ -27,7 +27,7 @@
     }
 
     const originalPlay = HTMLMediaElement.prototype.play;
-    HTMLMediaElement.prototype.play = function() {
+    HTMLMediaElement.prototype.play = function () {
         if (currentSettings.enabled) {
             applyVolumeToElement(this, currentSettings.volume);
         }
