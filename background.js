@@ -1,4 +1,3 @@
-// background.js - Site Sound
 function _browser() {
     return typeof browser !== 'undefined' ? browser : chrome;
 }
@@ -15,9 +14,15 @@ _browser().storage.local.get(['siteVolumes', 'lastVolume'], result => {
 
 function getCurrentHostname(cb) {
     _browser().tabs.query({ currentWindow: true, active: true }, tabs => {
-        if (tabs.length > 0) {
-            try { cb(new URL(tabs[0].url).hostname); } catch { cb(null); }
-        } else cb(null);
+        if (tabs.length > 0 && tabs[0].url) {
+            try {
+                cb(new URL(tabs[0].url).hostname);
+            } catch (e) {
+                cb(null);
+            }
+        } else {
+            cb(null);
+        }
     });
 }
 
@@ -31,29 +36,30 @@ function getVolume(host) {
     return siteVolumes[host] !== undefined ? siteVolumes[host] : lastVolume;
 }
 
-function setBadgeText(vol) {
-    // Always clear badge if no per-site value or value is 100
-    if (vol == null || vol === 100 || isNaN(vol)) {
-        _browser().browserAction.setBadgeText({ text: '' });
-    } else {
-        _browser().browserAction.setBadgeText({ text: String(vol) });
+function setBadgeText(settings) {
+    let text = '';
+    if (settings.enabled && settings.volume !== 100) {
+        text = String(settings.volume);
     }
+    _browser().browserAction.setBadgeText({ text: text });
 }
 
 function updateBadgeText() {
     getCurrentHostname(host => {
-        if (!host) {
-            setBadgeText(100);
-            return;
-        }
-        _browser().storage.local.get(['siteVolumes', 'lastVolume'], result => {
-            const vols = result.siteVolumes || {};
-            if (vols[host] !== undefined && vols[host] !== 100 && vols[host] != null && !isNaN(vols[host])) {
-                setBadgeText(vols[host]);
-            } else {
-                setBadgeText(100);
-            }
+        getSiteSettings(host, settings => {
+            setBadgeText(settings);
         });
+    });
+}
+
+function getSiteSettings(host, callback) {
+    if (!host) {
+        callback({ enabled: false, volume: 100 });
+        return;
+    }
+    _browser().storage.local.get([host], function (result) {
+        const settings = result[host] || { enabled: false, volume: 100 };
+        callback(settings);
     });
 }
 
@@ -62,13 +68,25 @@ _browser().runtime.onMessage.addListener((req, _, sendResponse) => {
         getCurrentHostname(host => { if (host) saveVolume(host, req.data.soundVolume); setBadgeText(req.data.soundVolume); });
     }
     if (req.type === 'setVolume') {
-        getCurrentHostname(host => { if (host) saveVolume(host, req.volume); setBadgeText(req.volume); });
-        _browser().tabs.query({ currentWindow: true, active: true }, tabs => {
-            if (tabs.length > 0) _browser().tabs.sendMessage(tabs[0].id, { action: 'changeSoundVolume' }, r => sendResponse && sendResponse(r));
+        getCurrentHostname(host => {
+            if (host) {
+                _browser().storage.local.get([host], function (result) {
+                    const settings = result[host] || { enabled: false, volume: 100 };
+                    settings.volume = req.volume;
+                    _browser().storage.local.set({ [host]: settings }, () => {
+                        updateBadgeText();
+                    });
+                });
+            }
         });
-        return true;
+    } else if (req.type === 'updateBadge') {
+        updateBadgeText();
     }
 });
 
 _browser().tabs.onActivated.addListener(updateBadgeText);
-_browser().tabs.onUpdated.addListener(updateBadgeText);
+_browser().tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === 'complete' && tab.active) {
+        updateBadgeText();
+    }
+});
