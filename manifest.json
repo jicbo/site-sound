@@ -2,29 +2,44 @@
 	"manifest_version": 2,
 	"name": "Site Sound",
 	"version": "1.1",
-
 	"description": "Set volume for each website. Remembers your preferred volume per site.",
 	"homepage_url": "https://github.com/jicbo/site-sound",
 	"icons": {
 		"512": "icons/wave-512.png"
 	},
-
-	"permissions": ["storage", "tabs", "<all_urls>"],
-
+	"permissions": [
+		"storage",
+		"tabs",
+		"<all_urls>"
+	],
 	"browser_action": {
 		"default_icon": "icons/wave-512.png",
 		"default_title": "Site Sound",
 		"default_popup": "popup/popup.html"
 	},
-
 	"content_scripts": [
 		{
-			"matches": ["<all_urls>"],
-			"js": ["site_sound.js"]
+			"matches": [
+				"<all_urls>"
+			],
+			"js": [
+				"site_sound.js"
+			]
 		}
 	],
-
 	"background": {
-		"scripts": ["background.js"]
+		"scripts": [
+			"background.js"
+		]
+	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "@site-sound.jicbo",
+			"strict_min_version": "60.0",
+			"data_collection_permissions": {
+				"user_content": false,
+				"telemetry": false
+			}
+		}
 	}
 }
