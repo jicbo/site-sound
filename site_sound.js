@@ -18,21 +18,15 @@
         const media = [...document.querySelectorAll('audio,video')];
         for (const el of media) {
             el.volume = newVolume;
+            el.muted = (newVolume === 0);
         }
     }
 
     function applyVolumeToElement(el, volume) {
         const newVolume = Math.max(0, Math.min(volume / 100, 1));
         el.volume = newVolume;
+        el.muted = (newVolume === 0);
     }
-
-    const originalPlay = HTMLMediaElement.prototype.play;
-    HTMLMediaElement.prototype.play = function () {
-        if (currentSettings.enabled) {
-            applyVolumeToElement(this, currentSettings.volume);
-        }
-        return originalPlay.apply(this, arguments);
-    };
 
     function startVolumeControl(settings) {
         if (observer) observer.disconnect();
@@ -40,8 +34,25 @@
         applyVolumeToAll(settings.volume);
 
         observer = new MutationObserver(mutations => {
-            applyVolumeToAll(currentSettings.volume);
+            setTimeout(() => {
+                const volume = currentSettings.volume;
+                for (const mutation of mutations) {
+                    for (const node of mutation.addedNodes) {
+                        if (node.nodeType === 1) {
+                            if (node.tagName === 'AUDIO' || node.tagName === 'VIDEO') {
+                                applyVolumeToElement(node, volume);
+                            } else {
+                                if (node.querySelectorAll) {
+                                    node.querySelectorAll('audio,video').forEach(el => applyVolumeToElement(el, volume));
+                                }
+                            }
+                        }
+                    }
+                }
+                applyVolumeToAll(volume);
+            }, 0);
         });
+        
         observer.observe(document.documentElement || document.body, { childList: true, subtree: true });
     }
 
@@ -50,7 +61,6 @@
             observer.disconnect();
             observer = null;
         }
-        applyVolumeToAll(100);
     }
 
     _browser().runtime.onMessage.addListener((req, _, sendResponse) => {
@@ -76,5 +86,3 @@
         }
     });
 })();
-
-
